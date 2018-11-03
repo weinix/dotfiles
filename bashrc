@@ -57,9 +57,9 @@ function cdf() {
 # Reload .bashrc
 alias refresh='. ~/.bashrc'
 
-export PATH=/Applications/Postgres.app/Contents/MacOS/bin:$PATH
+#export PATH=/Applications/Postgres.app/Contents/MacOS/bin:$PATH
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 function ps1_branch {
   b=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
@@ -78,26 +78,86 @@ reset="\[\e[0m\]"
 
 export PS1="${yellow}» $blue\W$magenta\$(ps1_branch)\n$yellow\$$reset "
 
-# Add the following to your ~/.bashrc or ~/.zshrc
-#
-# Alternatively, copy/symlink this file and source in your shell.  See `hitch --setup-path`.
 
-hitch() {
-  command hitch "$@"
-  if [[ -s "$HOME/.hitch_export_authors" ]] ; then source "$HOME/.hitch_export_authors" ; fi
+#if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
+#  export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+#else
+#  export VISUAL="nvim"
+#fi
+source ~/workspace/enhancd/init.sh
+
+export PATH="/anaconda3/bin:~/bin:$PATH:."
+alias pv=". ~/workspace/env/bin/activate"
+alias mux="if tmux ls; then tmux attach; else tmux; fi"
+alias ep="source ~/.aws/proxy_config"
+alias dp="source ~/.aws/noproxy"
+alias listprofile="grep '\[' ~/.aws/credentials"
+alias switchaws=""
+alias jpterm="jpterm -m expression"
+export smartsheet_key="2ivoff61klb7p1vdn1hfug5mlw"
+
+
+
+
+# added by Anaconda3 5.2.0 installer
+saws() {
+        export AWS_PROFILE=$1
 }
-alias unhitch='hitch -u'
 
-# Uncomment to persist pair info between terminal instances
-# hitch
 
-# Set up https://hub.github.com/:
-eval "$(hub alias -s)"
+get_mfa_token(){
+  token=$1
+  mfa=$(get_mfa)
+#  response=`aws sts get-session-token --serial-number $mfa --token-code $token `
+  now=$(date -u +"%Y-%m-%dT%H:%M:%SZ") 
+  exp=$(aws configure get expiration)
+  output=$(aws sts get-session-token --serial-number $mfa --query Credentials.[AccessKeyId,SecretAccessKey,SessionToken,Expiration]  --output text --token-code $token)
+  echo "output: $otuput"
+  read -r AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN EXPIRATION < <(echo "$output")
+  
+  export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+  export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+  export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN 
 
-export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
+  cat <<END 
+If another terminal session is need, copy and paste below lines:
+export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN 
+END
+#    echo aws configure set  aws_access_key_id $AWS_ACCESS_KEY_ID
+#    echo aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+#    echo aws configure set aws_session_token $AWS_SESSION_TOKEN 
+#    echo aws configure set expiration $EXPIRATION
+#    echo "Token session is on."
+}
 
-if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
-  export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-else
-  export VISUAL="nvim"
-fi
+
+srole(){
+#set -x
+  #aws sts assume-role --role-arn arn:aws:iam::123456789012:role/role-name --role-session-name "RoleSession1"
+ role=$1
+ id=`whoami`
+ sn=`date +"$id-%d%m%Y-%H%M%S"`
+ echo "sn: $sn"
+ response=`aws sts assume-role --role-arn $role --role-session-name $sn`
+ exp=`echo "$response" | awk -F '"' '/AccessKeyId/{print "export AWS_ACCESS_KEY_ID="strsub$4} /SecretAccessKey/{print "export AWS_SECRET_ACCESS_KEY="$4} /SessionToken/{ print "export AWS_SESSION_TOKEN="$4}'`
+ eval `echo $exp`
+ echo "$exp"
+ echo "session name: $sn"
+}
+
+get_mfa(){
+  aws iam list-mfa-devices --query MFADevices[].SerialNumber --output text
+}
+
+export PATH="/anaconda3/bin:~/bin:$PATH:."
+alias pv=". ~/workspace/env/bin/activate"
+alias mux="if tmux ls; then tmux attach; else tmux; fi"
+alias ep="source ~/.aws/proxy_config"
+alias dp="source ~/.aws/noproxy"
+export smartsheet_key="2ivoff61klb7p1vdn1hfug5mlw"
+alias listprofile="grep '\[' ~/.aws/credentials"
+alias jpterm="jpterm -m expression"
+
+complete -C aws_completer aws
