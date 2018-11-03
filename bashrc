@@ -1,4 +1,4 @@
-source ~/.profile
+#source ~/.profile
 
 # Bash customisations to be syncronised between machines.
 export PS1='\[\e[1;34m\][\u@\h \W]\$\[\e[0m\] '
@@ -9,7 +9,7 @@ export HISTSIZE=10000		# save 10000 items in history
 shopt -s histappend		# append history to ~\.bash_history when exiting shell
 
 # Lazy aliases
-alias l='ls -l'
+alias l='ls -ltr'
 alias la='ls -Al'
 alias ..='cd ..'
 alias tree='tree -C'
@@ -28,9 +28,6 @@ alias m='rake db:migrate'
 # node
 alias nombom="rm -rf node_modules && npm cache clean && npm i && rm -rf bower_components && bower cache clean && bower i && rm -rf tmp"
 
-# SVN aliases
-alias svnadd="svn st | grep '^\?' | awk '{print $2}' | xargs svn add"
-alias svnrmd="svn st | grep '^\!' | awk '{print $2}' | xargs svn rm"
 
 # git aliases
 alias g='git'
