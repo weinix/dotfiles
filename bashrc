@@ -91,7 +91,6 @@ alias dp="source ~/.aws/noproxy"
 alias listprofile="grep '\[' ~/.aws/credentials"
 alias switchaws=""
 alias jpterm="jpterm -m expression"
-export smartsheet_key="2ivoff61klb7p1vdn1hfug5mlw"
 
 
 
