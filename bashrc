@@ -24,7 +24,8 @@ alias sp='./script/server -e production'
 alias t='rake spec'
 alias ta='autotest -rails'
 alias m='rake db:migrate'
-
+alias vim='nvim'
+alias vi='/usr/bin/vim'
 # node
 alias nombom="rm -rf node_modules && npm cache clean && npm i && rm -rf bower_components && bower cache clean && bower i && rm -rf tmp"
 
