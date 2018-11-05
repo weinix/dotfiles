@@ -84,7 +84,6 @@ export PS1="${yellow}» $blue\W$magenta\$(ps1_branch)\n$yellow\$$reset "
 #fi
 source ~/workspace/enhancd/init.sh
 
-export PATH="/anaconda3/bin:~/bin:$PATH:."
 alias pv=". ~/workspace/env/bin/activate"
 alias mux="if tmux ls; then tmux attach; else tmux; fi"
 alias ep="source ~/.aws/proxy_config"
@@ -148,7 +147,7 @@ get_mfa(){
   aws iam list-mfa-devices --query MFADevices[].SerialNumber --output text
 }
 
-export PATH="/anaconda3/bin:~/bin:$PATH:."
+export PATH="~/bin:$PATH:.:~/.local/bin/:/anaconda3/bin"
 alias pv=". ~/workspace/env/bin/activate"
 alias mux="if tmux ls; then tmux attach; else tmux; fi"
 alias ep="source ~/.aws/proxy_config"
@@ -158,3 +157,4 @@ alias listprofile="grep '\[' ~/.aws/credentials"
 alias jpterm="jpterm -m expression"
 
 complete -C aws_completer aws
+pv

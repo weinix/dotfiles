@@ -1,9 +1,9 @@
 " Colors {{{
 syntax enable           " enable syntax processing
-colorscheme  xoria256   "Options: badwolf xoria256 CandyPaper Dark2 Dark Darksea
+colorscheme  xoria256 "Options: badwolf xoria256 CandyPaper Dark2 Dark Darksea
 set termguicolors
 
-"Colorcolumn
+" "Colorcolumn
 set textwidth=80
 set colorcolumn=+1
 " }}}
@@ -39,7 +39,6 @@ set incsearch           " search as characters are entered
 set hlsearch            " highlight all matches
 " }}}
 " Folding {{{
-"=== folding ===
 set foldmethod=indent   " fold based on indent level
 set foldnestmax=10      " max 10 depth
 set foldenable          " don't fold files by default on open
@@ -49,44 +48,40 @@ set foldlevelstart=10   " start with fold level of 1
 nmap j gj
 nmap k gk
 nmap gV `[v`]
-nmap <space> za   " Folding
-nmap <F5> :MundoToggle<CR> 
+nnoremap <space> za   " Folding
+nnoremap <F5> :MundoToggle<CR> 
+autocmd FileType python nnoremap <buffer> <F6> :call Flake8()<CR>
 " vim-test
-nmap <silent> t<C-n> :TestNearest<CR>
-nmap <silent> t<C-f> :TestFile<CR>
-nmap <silent> t<C-s> :TestSuite<CR>
-nmap <silent> t<C-l> :TestLast<CR>
-nmap <silent> t<C-g> :TestVisit<CR>
+" nmap <silent> t<C-n> :TestNearest<CR>
+nnoremap <silent> tf :TestFile<CR>
+" nmap <silent> t<C-s> :TestSuite<CR>
+" nmap <silent> t<C-l> :TestLast<CR>
+" nmap <silent> t<C-g> :TestVisit<CR>
+nnoremap <leader>rc :Coveragepy refresh<cr>
+nnoremap <leader>sc :Coveragepy show<cr>
 " }}}
-" Leader Shortcuts {{{
-let mapleader=","
-nmap <leader>m :silent make\|redraw!\|cw<CR>
-nmap <leader>h :A<CR>
-nmap <leader>ev :vsp $MYVIMRC<CR>
-nmap <leader>et :exec ":vsp /Users/dblack/notes/vim/" . strftime('%m-%d-%y') . ".md"<CR>
-nmap <leader>ez :vsp ~/.zshrc<CR>
-nmap <leader>sv :source $MYVIMRC<CR>
+" " Leader Shortcuts {{{
+" let mapleader=","
+" nmap <leader>m :silent make\|redraw!\|cw<CR>
+" nmap <leader>h :A<CR>
+" nmap <leader>sv :source $MYVIMRC<CR>
 nmap <leader>l :call <SID>ToggleNumber()<CR>
 nmap <leader><space> :noh<CR>
-nmap <leader>s :mksession<CR>
-nmap <leader>a :Ag
-nmap <leader>c :SyntasticCheck<CR>:Errors<CR>
-nmap <leader>1 :set number!<CR>
-nmap <leader>d :GoDoc
-nmap <leader>t :TestFile<CR>
-nmap <leader>r :call <SID>RunFile()<CR>
-nmap <leader>b :call <SID>BuildFile()<CR>
-vnoremap <leader>y "+y
-"vim-colorstepper
-nmap <leader>cp <Plug>ColorstepPrev
-nmap <leader>cn <Plug>ColorstepNext
-nmap <leader>cr <Plug>ColorstepReload
-" graphviz
-map <silent> <leader>lv :silent GraphvizCompile<CR>:silent GraphvizShow<CR>:redraw!<CR>
-map <leader>ll :GraphvizCompile<CR>:redraw!<CR>
-map <leader>li :GraphvizInteractive<CR>
-
-" }}}
+" nmap <leader>s :mksession<CR>
+" nmap <leader>a :Ag
+" nmap <leader>c :SyntasticCheck<CR>:Errors<CR>
+" nmap <leader>1 :set number!<CR>
+" nmap <leader>d :GoDoc
+" nmap <leader>t :TestFile<CR>
+" nmap <leader>r :call <SID>RunFile()<CR>
+" nmap <leader>b :call <SID>BuildFile()<CR>
+" vnoremap <leader>y "+y
+" " graphviz
+" map <silent> <leader>lv :silent GraphvizCompile<CR>:silent GraphvizShow<CR>:redraw!<CR>
+" map <leader>ll :GraphvizCompile<CR>:redraw!<CR>
+" map <leader>li :GraphvizInteractive<CR>
+" 
+" " }}}
 " CtrlP {{{
 let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer = 0
@@ -124,15 +119,17 @@ set writebackup
 " }}}
 " Vim Plugin's {{{
 call plug#begin('~/.vim/plugged')
+Plug 'weinix/vim-colorschemes'
 Plug 'bling/vim-airline' " Lean and mean status/tabline https://github.com/vim-airline/vim-airline
 Plug 'vim-airline/vim-airline-themes'
-Plug 'janko-m/vim-test'     " Wrapper for running tests on different granularities. https://github.com/janko-m/vim-test
-                            " https://adamweidner.com/posts/python-dev-env/
+Plug 'janko-m/vim-test'     " Wrapper for running tests on different granularities. https://github.com/janko-m/vim-test, https://adamweidner.com/posts/python-dev-env/
+Plug 'Vigemus/nvimux'       " https://github.com/Vigemus/nvimux
 Plug 'vimlab/split-term.vim'
+Plug 'alfredodeza/coveragepy.vim'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround' " https://github.com/tpope/vim-surround
 Plug 'ctrlpvim/ctrlp.vim' " Full path fuzzy file, buffer, mru, tag, ... finder for Vim. https://github.com/ctrlpvim/ctrlp.vim
-Plug 'kassio/neoterm' " https://github.com/kassio/neoterm
+" Plug 'kassio/neoterm' " https://github.com/kassio/neoterm
 Plug 'bronson/vim-trailing-whitespace' "Tailing white space in red
 Plug 'tmhedberg/matchit'   " enhance matching
 Plug 'ervandew/supertab' " https://github.com/ervandew/supertab
@@ -140,21 +137,11 @@ Plug 'dhruvasagar/vim-zoom' " https://github.com/dhruvasagar/vim-zoom <C-W>m
 Plug 'tpope/vim-commentary' " https://github.com/tpope/vim-commentary
 Plug 'christoomey/vim-sort-motion'
 Plug 'tmhedberg/SimpylFold' " https://github.com/tmhedberg/SimpylFold 
-Plug 'weinix/vim-colorschemes' 
-Plug 'qualiabyte/vim-colorstepper' " Cycle easily through vim color schemes
 
-" nvimux
-Plug 'Vigemus/nvimux'  " https://github.com/Vigemus/nvimux
-"   {'s', ':NvimuxHorizontalSplit', {'n', 'v', 'i', 't'}},
-"   {'v', ':NvimuxVerticalSplit', {'n', 'v', 'i', 't'}},
 
-"
 Plug 'wannesm/wmgraphviz.vim' "https://github.com/wannesm/wmgraphviz.vim <leader>ll, lv, li
 
 " Launguage tools
-"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"Plug 'zchee/deoplete-jedi'
-"Plug 'Shougo/neco-syntax'
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp' " Dependency of ncm2
 Plug 'ncm2/ncm2-bufword'
@@ -166,6 +153,7 @@ Plug 'ncm2/ncm2-pyclang' " C/C++
 Plug 'ncm2/ncm2-vim'    " vimscript
 Plug 'phpactor/ncm2-phpactor' " php
 Plug 'ObserverOfTime/ncm2-jc2' " Java
+Plug 'nvie/vim-flake8'
 
 " https://github.com/moll/vim-node
 Plug 'moll/vim-node' " Tools and environment to make Vim superb for developing with Node.js
@@ -174,19 +162,15 @@ Plug 'scrooloose/syntastic' " Syntax checking  https://github.com/vim-syntastic/
 Plug 'simnalamburt/vim-mundo' " vim undo tree: https://simnalamburt.github.io/vim-mundo/#usage
 Plug 'tpope/vim-fugitive' " Git http://vimcasts.org/episodes/fugitive-vim---a-complement-to-command-line-git/
 Plug 'vimwiki/vimwiki' " https://github.com/vimwiki/vimwiki
-"Plug 'vim-sparkup' " html speed
-
-" TBD
-"Plug 'benmills/vimux'
 
 call plug#end()
 " }}}
 " Plugin settings {{{
 " vim-test
-"let test#strategy = "Vimux"  " https://github.com/janko-m/vim-test
-"let g:test#preserve_screen = 1 " disable clear screen before exec
-"let test#python#pytest#executable = 'ptw --' " allow run pytest-watch 
-"
+let test#python#pytest#executable = '~/.local/bin/ptw --'
+let test#python#pytest#options = '-vv --cov module_to_cover --cov-report html'
+let g:test#preserve_screen = 1 " disable clear screen before exec
+
 " airline
 set laststatus=2
 let g:airline_theme = 'zenburn'
@@ -220,9 +204,8 @@ let g:wmgraphviz_output = "png"
 let g:WMGraphviz_viewer = "open"
 let g:WMGraphviz_shelloptions = ""
 
-
 " ctrlp
-"let g:ctrlp_cmd = 'CtrlPMRU'
+" let g:ctrlp_cmd = 'CtrlPMRU'
 
 " nvimux
 lua << EOF
@@ -298,6 +281,14 @@ function! <SID>BuildFile()
         :GoBuild
     endif
 endfunc
+
+" vim-test
+function! TermStrategy(cmd)
+    execute ":Term " . a:cmd
+    call feedkeys("\<esc>\<C-A>k")
+endfunction
+let g:test#custom_strategies = {'term': function('TermStrategy')}
+let test#strategy = 'term'
 " }}}
 "
 " Make sure below line is the last line
