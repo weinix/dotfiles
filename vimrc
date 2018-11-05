@@ -55,7 +55,11 @@ endif
 " Colorscheme
 set termguicolors
 set background=light
-silent! colorscheme solarized8_light
+colorscheme molokai
+set guifont=Monaco:h14
+
+"Turn on numbering
+set nu
 
 set hidden
 

@@ -1,6 +1,8 @@
 command! PackUpdate packadd minpac | source $MYVIMRC | redraw | call minpac#update()
 command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
 
+packadd minpac
+
 if !exists('*minpac#init')
   finish
 endif
@@ -34,6 +36,8 @@ call minpac#add('tommcdo/vim-exchange')
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('szw/vim-g')
 call minpac#add('kana/vim-smartinput')
+call minpac#add('christoomey/vim-sort-motion')
+echo "1"
 
 " Custom textobjects
 call minpac#add('kana/vim-textobj-user')
@@ -46,11 +50,13 @@ call minpac#add('Julian/vim-textobj-variable-segment')
 call minpac#add('bkad/CamelCaseMotion')
 call minpac#add('b4winckler/vim-angry')
 call minpac#add('saihoooooooo/vim-textobj-space')
+echo "2"
 
 " For Vimscript
 call minpac#add('tpope/vim-scriptease')
 call minpac#add('tweekmonster/helpful.vim')
 call minpac#add('nelstrom/vim-docopen')
+echo "3"
 
 " Markdown
 call minpac#add('tpope/vim-markdown')
@@ -79,12 +85,13 @@ call minpac#add('rakr/vim-one', {'type': 'opt'})
 call minpac#add('NLKNguyen/papercolor-theme', {'type': 'opt'})
 call minpac#add('reedes/vim-colors-pencil', {'type': 'opt'})
 
-" Plugins for either Vim8 or NeoVim
+ Plugins for either Vim8 or NeoVim
 if has('nvim')
+echo "4"
   call minpac#add('Shougo/denite.nvim', {})
   call minpac#add('machakann/vim-highlightedyank', {})
-  call minpac#add('kassio/neoterm', {'type': 'opt'})
+  call minpac#add('kassio/neoterm')
   call minpac#add('Shougo/neomru.vim', {'type': 'opt'})
 else
-  call minpac#add('Shougo/unite.vim', {'type': 'opt'})
+   call minpac#add('Shougo/unite.vim', {'type': 'opt'})
 endif
